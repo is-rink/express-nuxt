@@ -3,24 +3,32 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var { Nuxt, Builder } = require('nuxt');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var v1Router = require('./server/routes/v1');
 
 var app = express();
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'static')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/v1', v1Router);
+
+// instantiate nuxt.js with the options
+const config = require('./nuxt.config.js')
+config.dev = !(process.env.NODE_ENV === 'production');
+const nuxt = new Nuxt(config)
+
+// render every route with Nuxt.js
+app.use(nuxt.render)
+
+// build only in dev mode with hot-reloading
+if (config.dev) {
+  new Builder(nuxt).build();
+}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
