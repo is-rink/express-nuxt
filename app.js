@@ -5,17 +5,17 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var { Nuxt, Builder } = require('nuxt');
 
-var v1Router = require('./server/routes/v1');
+var usersRouter = require('./api/routes/users');
 
 var app = express();
 
 app.use(logger('dev'));
-app.use(express.json());
+app.use('/api', express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'static')));
 
-app.use('/v1', v1Router);
+app.use('/api', usersRouter);
 
 // instantiate nuxt.js with the options
 const config = require('./nuxt.config.js')
