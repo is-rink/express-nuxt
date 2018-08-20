@@ -1,13 +1,13 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-var { Nuxt, Builder } = require('nuxt');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const { Nuxt, Builder } = require('nuxt');
 
-var apiRouter = require('./api/index');
+const apiRouter = require('./api');
 
-var app = express();
+const app = express();
 
 app.use(logger('dev'));
 app.use(express.urlencoded({ extended: false }));
