@@ -14,14 +14,14 @@
 </template>
 
 <script>
-import axios from '~/plugins/axios'
+import apiClient from '~/plugins/api-client'
 
 export default {
   name: 'id',
   asyncData ({ params, error }) {
-    return axios.get('/api/users/' + params.id)
+    return apiClient.get('/api/users/' + params.id)
       .then((res) => {
-        return { user: res.data }
+        return { user: res }
       })
       .catch((e) => {
         error({ statusCode: 404, message: 'User not found' })
